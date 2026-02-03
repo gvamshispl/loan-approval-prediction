@@ -22,3 +22,4 @@ feature engineering, model training, evaluation, and prediction.
 - Scikit-learn
 - Matplotlib / Seaborn (optional)
 
+project link:https://huggingface.co/spaces/gvamshispl/loanapproval

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Loan Approval Prediction</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6fb;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: #0d47a1;
+        }
+
+        label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 6px 0 14px 0;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        small {
+            color: #666;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: #1565c0;
+            color: white;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+        }
+
+        .result {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 22px;
+            font-weight: bold;
+        }
+
+        .approved { color: green; }
+        .rejected { color: red; }
+    </style>
+</head>
+
+<body>
+<div class="container">
+
+<h2>Loan Approval Prediction</h2>
+
+<form method="POST" action="/predict">
+
+<!-- EXTRA UI FIELDS (Not used by model) -->
+<label>Application Date</label>
+<input type="date" name="ApplicationDate" value="{{ form_data.ApplicationDate if form_data }}">
+
+<label>Education Level</label>
+<select name="EducationLevel">
+    <option>High School</option>
+    <option>Bachelor</option>
+    <option>Master</option>
+    <option>PhD</option>
+</select>
+
+<label>Experience (Years)</label>
+<input type="number" min="0" max="40" name="Experience" value="{{ form_data.Experience if form_data }}">
+<small>Range: 0 – 40 years</small>
+
+<label>Home Ownership Status</label>
+<select name="HomeOwnershipStatus">
+    <option>Owned</option>
+    <option>Rented</option>
+    <option>Mortgage</option>
+</select>
+
+<label>Loan Purpose</label>
+<select name="LoanPurpose">
+    <option>Personal</option>
+    <option>Home</option>
+    <option>Education</option>
+    <option>Business</option>
+</select>
+
+<hr>
+
+<!-- MODEL FEATURES -->
+<label>Age</label>
+<input type="number" min="18" max="70" name="Age" value="{{ form_data.Age if form_data }}" required>
+<small>Range: 18 – 70</small>
+
+<label>Annual Income</label>
+<input type="number" min="10000" max="500000" name="AnnualIncome" value="{{ form_data.AnnualIncome if form_data }}" required>
+
+<label>Credit Score</label>
+<input type="number" min="300" max="900" name="CreditScore" value="{{ form_data.CreditScore if form_data }}" required>
+
+<label>Loan Amount</label>
+<input type="number" min="1000" max="500000" name="LoanAmount" value="{{ form_data.LoanAmount if form_data }}" required>
+
+<label>Credit Card Utilization Rate</label>
+<input type="number" step="0.01" min="0" max="1" name="CreditCardUtilizationRate"
+       value="{{ form_data.CreditCardUtilizationRate if form_data }}" required>
+
+<label>Savings Account Balance</label>
+<input type="number" name="SavingsAccountBalance" value="{{ form_data.SavingsAccountBalance if form_data }}" required>
+
+<label>Checking Account Balance</label>
+<input type="number" name="CheckingAccountBalance" value="{{ form_data.CheckingAccountBalance if form_data }}" required>
+
+<label>Total Assets</label>
+<input type="number" name="TotalAssets" value="{{ form_data.TotalAssets if form_data }}" required>
+
+<label>Monthly Income</label>
+<input type="number" name="MonthlyIncome" value="{{ form_data.MonthlyIncome if form_data }}" required>
+
+<label>Net Worth</label>
+<input type="number" name="NetWorth" value="{{ form_data.NetWorth if form_data }}" required>
+
+<label>Interest Rate</label>
+<input type="number" step="0.01" min="0" max="1" name="InterestRate" value="{{ form_data.InterestRate if form_data }}" required>
+
+<label>Monthly Loan Payment</label>
+<input type="number" name="MonthlyLoanPayment" value="{{ form_data.MonthlyLoanPayment if form_data }}" required>
+
+<label>Total Debt To Income Ratio</label>
+<input type="number" step="0.01" min="0" max="1" name="TotalDebtToIncomeRatio"
+       value="{{ form_data.TotalDebtToIncomeRatio if form_data }}" required>
+
+<label>Risk Score</label>
+<input type="number" min="0" max="100" name="RiskScore" value="{{ form_data.RiskScore if form_data }}" required>
+
+<button type="submit">Predict Loan Status</button>
+</form>
+
+{% if result %}
+<div class="result {% if 'Approved' in result %}approved{% else %}rejected{% endif %}">
+    {{ result }}
+</div>
+{% endif %}
+
+</div>
+</body>
+</html>
